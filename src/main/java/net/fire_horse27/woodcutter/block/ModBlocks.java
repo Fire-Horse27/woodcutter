@@ -1,6 +1,6 @@
-package net.fire_horse27.template.block;
+package net.fire_horse27.woodcutter.block;
 
-import net.fire_horse27.template.Template;
+import net.fire_horse27.woodcutter.Woodcutter;
 import net.minecraft.block.Block;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
@@ -25,10 +25,10 @@ public class ModBlocks {
     }
 
     public static void registerModBlocks() {
-        Template.LOGGER.debug("Registering ModBlocks for " + Template.MOD_ID);
+        Woodcutter.LOGGER.debug("Registering ModBlocks for " + Woodcutter.MOD_ID);
     }
 
     private static Identifier id(String path) {
-        return Identifier.of(Template.MOD_ID, path);
+        return Identifier.of(Woodcutter.MOD_ID, path);
     }
 }

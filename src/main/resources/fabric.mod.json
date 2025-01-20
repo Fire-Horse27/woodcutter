@@ -1,9 +1,9 @@
 {
 	"schemaVersion": 1,
-	"id": "template",
+	"id": "woodcutter",
 	"version": "${version}",
 
-	"name": "template",
+	"name": "woodcutter",
 	"description": "This is a template for future mods",
 	"authors": [
 		"Fire_Horse27"
@@ -18,13 +18,13 @@
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-			"net.fire_horse27.template.Template"
+          "net.fire_horse27.woodcutter.Woodcutter"
 		],
 		"fabric-datagen": [
-			"net.fire_horse27.template.TemplateDataGenerator"
+			"net.fire_horse27.woodcutter.WoodcutterDataGenerator"
 		],
 		"client": [
-			"net.fire_horse27.template.TemplateClient"
+			"net.fire_horse27.woodcutter.WoodcutterClient"
 		]
 	},
 
