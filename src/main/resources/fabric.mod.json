@@ -1,0 +1,37 @@
+{
+	"schemaVersion": 1,
+	"id": "template",
+	"version": "${version}",
+
+	"name": "template",
+	"description": "This is a template for future mods",
+	"authors": [
+		"Fire_Horse27"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+
+	"license": "LGPL-3.0",
+
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"net.fire_horse27.template.Template"
+		],
+		"fabric-datagen": [
+			"net.fire_horse27.template.TemplateDataGenerator"
+		],
+		"client": [
+			"net.fire_horse27.template.TemplateClient"
+		]
+	},
+
+	"depends": {
+		"fabricloader": ">=0.15.11",
+		"minecraft": "~1.21.4",
+		"java": ">=21",
+		"fabric-api": "*"
+	}
+}
