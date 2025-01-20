@@ -6,6 +6,7 @@ import net.minecraft.data.recipe.RecipeExporter;
 import net.minecraft.data.recipe.RecipeGenerator;
 import net.minecraft.data.recipe.StonecuttingRecipeJsonBuilder;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemConvertible;
 import net.minecraft.item.Items;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.book.RecipeCategory;
@@ -60,12 +61,12 @@ public class ModRecipeProvider extends FabricRecipeProvider {
 
     private static final List<Item> CopperBlock = List.of(Items.COPPER_BLOCK, Items.EXPOSED_COPPER,
             Items.WEATHERED_COPPER, Items.OXIDIZED_COPPER, Items.WAXED_COPPER_BLOCK, Items.WAXED_EXPOSED_COPPER,
-            Items.WAXED_WEATHERED_COPPER, Items.WAXED_OXIDIZED_COPPER);
+            Items.WAXED_WEATHERED_COPPER, Items.WAXED_OXIDIZED_COPPER, Items.IRON_BLOCK);
 
     private static final List<Item> CopperTrapdoor = List.of(Items.COPPER_TRAPDOOR, Items.EXPOSED_COPPER_TRAPDOOR,
             Items.WEATHERED_COPPER_TRAPDOOR, Items.OXIDIZED_COPPER_TRAPDOOR, Items.WAXED_COPPER_TRAPDOOR,
             Items.WAXED_EXPOSED_COPPER_TRAPDOOR, Items.WAXED_WEATHERED_COPPER_TRAPDOOR,
-            Items.WAXED_OXIDIZED_COPPER_TRAPDOOR);
+            Items.WAXED_OXIDIZED_COPPER_TRAPDOOR, Items.IRON_TRAPDOOR);
 
     @Override
     protected RecipeGenerator getRecipeGenerator(RegistryWrapper.WrapperLookup registries, RecipeExporter exporter) {
@@ -73,30 +74,46 @@ public class ModRecipeProvider extends FabricRecipeProvider {
             @Override
             public void generate() {
                 for (int i = 0; i < WOODCOUNT; i++) {
-                    var tag = registries.getOrThrow(RegistryKeys.ITEM).getOrThrow(Log.get(i));
-                    StonecuttingRecipeJsonBuilder.createStonecutting(Ingredient.fromTag(tag),
-                            RecipeCategory.MISC, Plank.get(i), 4)
-                            .criterion("has_" + Log.get(i).id().getPath(), this.conditionsFromTag(Log.get(i)))
-                            .offerTo(exporter, "woodcutter:" + getItemPath(Plank.get(i)) + "_from_" +
-                                    Log.get(i).id().getPath() + "_stonecutting");
+                    if (i == 8) {
+                        stonecuttingRecipeFromTag(Log.get(i), Plank.get(i), 2);
+                    }
+                    else {
+                        stonecuttingRecipeFromTag(Log.get(i), Plank.get(i), 4);
+                    }
                 }
 
                 for (int i = 0; i < WOODCOUNT + 1; i++) {
-                    offerStonecuttingRecipe(RecipeCategory.MISC, Slab.get(i), Plank.get(i), 2);
-                    offerStonecuttingRecipe(RecipeCategory.MISC, Stair.get(i), Plank.get(i));
+                    stonecuttingRecipe(Plank.get(i), Slab.get(i), 2);
+                    stonecuttingRecipe(Plank.get(i), Stair.get(i), 1);
                 }
 
                 for (int i = 0; i < WOODCOUNT; i++) {
-                    offerStonecuttingRecipe(RecipeCategory.MISC, Button.get(i), Plank.get(i), 4);
-                    offerStonecuttingRecipe(RecipeCategory.MISC, PressurePlate.get(i), Plank.get(i), 2);
-                    offerStonecuttingRecipe(RecipeCategory.MISC, Trapdoor.get(i), Plank.get(i), 2);
+                    stonecuttingRecipe(Plank.get(i), Button.get(i), 4);
+                    stonecuttingRecipe(Plank.get(i), PressurePlate.get(i), 2);
+                    stonecuttingRecipe(Plank.get(i), Trapdoor.get(i), 2);
                 }
 
-                offerStonecuttingRecipe(RecipeCategory.MISC, Items.COBBLED_DEEPSLATE, Items.DEEPSLATE);
+                stonecuttingRecipe(Items.DEEPSLATE, Items.COBBLED_DEEPSLATE, 1);
 
-                for (int i = 0; i < 8; i++) {
-                    offerStonecuttingRecipe(RecipeCategory.MISC, CopperTrapdoor.get(i), CopperBlock.get(i), 3);
+                for (int i = 0; i < 9; i++) {
+                    stonecuttingRecipe(CopperBlock.get(i), CopperTrapdoor.get(i), 3);
                 }
+            }
+
+            private void stonecuttingRecipe(ItemConvertible input, ItemConvertible output, int count) {
+                StonecuttingRecipeJsonBuilder.createStonecutting(Ingredient.ofItem(input), RecipeCategory.MISC,
+                                output, count)
+                        .criterion(hasItem(input), this.conditionsFromItem(input))
+                        .offerTo(exporter, "woodcutter:" + convertBetween(output, input) + "_stonecutting");
+            }
+
+            private void stonecuttingRecipeFromTag(TagKey<Item> input, ItemConvertible output, int count) {
+                var tag = registries.getOrThrow(RegistryKeys.ITEM).getOrThrow(input);
+                StonecuttingRecipeJsonBuilder.createStonecutting(Ingredient.fromTag(tag),
+                                RecipeCategory.MISC, output, count)
+                        .criterion("has_" + input.id().getPath(), this.conditionsFromTag(input))
+                        .offerTo(exporter, "woodcutter:" + getItemPath(output) + "_from_" +
+                                input.id().getPath() + "_stonecutting");
             }
         };
     }
