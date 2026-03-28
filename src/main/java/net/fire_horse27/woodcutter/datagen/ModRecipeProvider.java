@@ -101,8 +101,8 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                     stonecuttingRecipe(Materials.get(i + 1), PressurePlate.get(i), 2);
                 }
 
-                stonecuttingRecipe(Items.DEEPSLATE, Items.COBBLED_DEEPSLATE, 1);
-                stonecuttingRecipe(Items.STONE, Items.COBBLESTONE, 1);
+//                stonecuttingRecipe(Items.DEEPSLATE, Items.COBBLED_DEEPSLATE, 1);
+//                stonecuttingRecipe(Items.STONE, Items.COBBLESTONE, 1);
 
                 for (int i = 0; i < 9; i++) {
                     stonecuttingRecipe(MetalBlock.get(i), MetalTrapdoor.get(i), 3);
